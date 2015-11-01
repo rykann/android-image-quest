@@ -17,19 +17,8 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.ImageDetailActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_image_detail"
-            android:parentActivityName=".activities.SearchActivity"
-            android:theme="@style/FullscreenTheme" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.kannegiesser.imagequest.activities.SearchActivity" />
         </activity>
         <activity
             android:name=".activities.ImageDisplayActivity"
