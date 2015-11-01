@@ -74,6 +74,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 //TODO: extract helper method
                 //TODO: check for network access
+                //TODO: implement infinite scroll
 
                 ImageQuery query = new ImageQuery();
                 query.query = etQuery.getText().toString();
@@ -83,18 +84,15 @@ public class SearchActivity extends AppCompatActivity {
                 imageSearchClient.findImages(query, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        // TODO: only clear if this is a new search
                         imageResults.clear();;
                         try {
                             JSONArray jsonResults = response.getJSONObject("responseData").getJSONArray("results");
-                            for (int i = 0; i < jsonResults.length(); i++) {
-                                imageResults.add(ImageResult.fromJson(jsonResults.getJSONObject(i)));
-                            }
+                            imageResults.addAll(ImageResult.fromJson(jsonResults));
                         } catch (JSONException e) {
                             Log.e(TAG, "Unable to parse search results", e);
                         }
                         imageResultsAdapter.notifyDataSetChanged();
-                        Log.d(TAG, response.toString());
-                        Toast.makeText(SearchActivity.this, "Image search succeeded", Toast.LENGTH_LONG).show();
                     }
 
                     @Override

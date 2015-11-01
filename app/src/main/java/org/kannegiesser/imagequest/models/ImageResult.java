@@ -3,20 +3,13 @@ package org.kannegiesser.imagequest.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ImageResult implements Parcelable {
+import java.util.ArrayList;
 
-    class Keys {
-        static final String TITLE = "title";
-        static final String WIDTH = "width";
-        static final String HEIGHT = "height";
-        static final String URL = "url";
-        static final String THUMB_WIDTH = "tbWidth";
-        static final String THUMB_HEIGHT = "tbHeight";
-        static final String THUMB_URL = "tbUrl";
-    }
+public class ImageResult implements Parcelable {
 
     public String title;
     public int imageWidth;
@@ -29,26 +22,32 @@ public class ImageResult implements Parcelable {
     public ImageResult() {
     }
 
-    protected ImageResult(Parcel in) {
-        this.title = in.readString();
-        this.imageWidth = in.readInt();
-        this.imageHeight = in.readInt();
-        this.imageUrl = in.readString();
-        this.thumbWidth = in.readInt();
-        this.thumbHeight = in.readInt();
-        this.thumbUrl = in.readString();
+    protected ImageResult(JSONObject json) throws JSONException {
+        title = json.getString(JsonKeys.TITLE);
+        imageWidth = Integer.parseInt(json.getString(JsonKeys.WIDTH));
+        imageHeight = Integer.parseInt(json.getString(JsonKeys.HEIGHT));
+        imageUrl = json.getString(JsonKeys.URL);
+        thumbWidth = Integer.parseInt(json.getString(JsonKeys.THUMB_WIDTH));
+        thumbHeight = Integer.parseInt(json.getString(JsonKeys.THUMB_HEIGHT));
+        thumbUrl = json.getString(JsonKeys.THUMB_URL);
     }
 
-    public static ImageResult fromJson(JSONObject json) throws JSONException {
-        ImageResult result = new ImageResult();
-        result.title = json.getString(Keys.TITLE);
-        result.imageWidth = Integer.parseInt(json.getString(Keys.WIDTH));
-        result.imageHeight = Integer.parseInt(json.getString(Keys.HEIGHT));
-        result.imageUrl = json.getString(Keys.URL);
-        result.thumbWidth = Integer.parseInt(json.getString(Keys.THUMB_WIDTH));
-        result.thumbHeight = Integer.parseInt(json.getString(Keys.THUMB_HEIGHT));
-        result.thumbUrl = json.getString(Keys.THUMB_URL);
-        return result;
+    protected ImageResult(Parcel in) {
+        title = in.readString();
+        imageWidth = in.readInt();
+        imageHeight = in.readInt();
+        imageUrl = in.readString();
+        thumbWidth = in.readInt();
+        thumbHeight = in.readInt();
+        thumbUrl = in.readString();
+    }
+
+    public static ArrayList<ImageResult> fromJson(JSONArray jsonResults) throws JSONException {
+        ArrayList<ImageResult> imageResults = new ArrayList<>();
+        for (int i = 0; i < jsonResults.length(); i++) {
+            imageResults.add(new ImageResult(jsonResults.getJSONObject(i)));
+        }
+        return imageResults;
     }
 
     @Override
@@ -76,4 +75,14 @@ public class ImageResult implements Parcelable {
             return new ImageResult[size];
         }
     };
+
+    class JsonKeys {
+        static final String TITLE = "title";
+        static final String WIDTH = "width";
+        static final String HEIGHT = "height";
+        static final String URL = "url";
+        static final String THUMB_WIDTH = "tbWidth";
+        static final String THUMB_HEIGHT = "tbHeight";
+        static final String THUMB_URL = "tbUrl";
+    }
 }
