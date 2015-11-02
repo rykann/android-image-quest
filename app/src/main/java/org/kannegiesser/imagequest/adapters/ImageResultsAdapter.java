@@ -22,6 +22,7 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult> {
         super(context, 0, imageResults);
     }
 
+    //TODO: implement ViewHolder pattern
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageResult result = getItem(position);

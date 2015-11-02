@@ -23,6 +23,7 @@ import org.kannegiesser.imagequest.R;
 import org.kannegiesser.imagequest.adapters.ImageResultsAdapter;
 import org.kannegiesser.imagequest.clients.ImageSearchClient;
 import org.kannegiesser.imagequest.clients.ImageSearchClientImpl;
+import org.kannegiesser.imagequest.listeners.EndlessScrollListener;
 import org.kannegiesser.imagequest.models.ImageQuery;
 import org.kannegiesser.imagequest.models.ImageResult;
 
@@ -64,6 +65,17 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                Log.d(TAG, String.format("onLoadMore page: %d, totalItemsCount: %d", page, totalItemsCount));
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                fetchImageResults(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
         addButtonListener();
     }
 
@@ -71,36 +83,38 @@ public class SearchActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fetchImageResults(0);
+            }
+        });
+    }
 
-                //TODO: extract helper method
-                //TODO: check for network access
-                //TODO: implement infinite scroll
+    //TODO: check for network access
+    private void fetchImageResults(int page) {
+        Log.d(TAG, "fetchImageResults page: " + page);
+        if (page == 0) {
+            imageResultsAdapter.clear();
+        }
 
-                ImageQuery query = new ImageQuery();
-                query.query = etQuery.getText().toString();
-                query.resultsPerPage = 8;
-                query.startIndex = 0;
+        ImageQuery query = new ImageQuery();
+        query.query = etQuery.getText().toString();
+        query.resultsPerPage = 8;
+        query.startIndex = page * 8;
 
-                imageSearchClient.findImages(query, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        // TODO: only clear if this is a new search
-                        imageResults.clear();;
-                        try {
-                            JSONArray jsonResults = response.getJSONObject("responseData").getJSONArray("results");
-                            imageResults.addAll(ImageResult.fromJson(jsonResults));
-                        } catch (JSONException e) {
-                            Log.e(TAG, "Unable to parse search results", e);
-                        }
-                        imageResultsAdapter.notifyDataSetChanged();
-                    }
+        imageSearchClient.findImages(query, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    JSONArray jsonResults = response.getJSONObject("responseData").getJSONArray("results");
+                    imageResultsAdapter.addAll(ImageResult.fromJson(jsonResults));
+                } catch (JSONException e) {
+                    Log.e(TAG, "Unable to parse search results", e);
+                }
+            }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.e(TAG, String.format("Image search failed. Status: %d, Body: %s", statusCode, responseString), throwable);
-                        Toast.makeText(SearchActivity.this, "Image search failed", Toast.LENGTH_LONG).show();
-                    }
-                });
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e(TAG, String.format("Image search failed. Status: %d, Body: %s", statusCode, responseString), throwable);
+                Toast.makeText(SearchActivity.this, "Image search failed", Toast.LENGTH_LONG).show();
             }
         });
     }

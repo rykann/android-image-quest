@@ -1,14 +1,16 @@
 package org.kannegiesser.imagequest.clients;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.LogHandler;
-import com.loopj.android.http.LogInterface;
 import com.loopj.android.http.RequestParams;
 
 import org.kannegiesser.imagequest.models.ImageQuery;
 
 public class ImageSearchClientImpl implements ImageSearchClient {
+
+    private static final String TAG = "ImageSearchClientImpl";
 
     class ParamNames {
         static final String QUERY = "q";
@@ -23,9 +25,8 @@ public class ImageSearchClientImpl implements ImageSearchClient {
     @Override
     public void findImages(ImageQuery query, JsonHttpResponseHandler responseHandler) {
         AsyncHttpClient httpClient = new AsyncHttpClient();
-        LogInterface log = new LogHandler();
-        log.setLoggingLevel(LogInterface.WTF);
-        httpClient.setLogInterface(log);
+        RequestParams params = buildParams(query);
+        Log.d(TAG, "query params: " + params);
         httpClient.get(IMAGE_SEARCH_URL, buildParams(query), responseHandler);
     }
 
