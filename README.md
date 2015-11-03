@@ -35,7 +35,7 @@ liked to polish the UI and implement more extensions.
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/TBD.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/5aKbxEt.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
