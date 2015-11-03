@@ -24,7 +24,7 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-* [x]Advanced: Replace Filter Settings Activity with a lightweight modal overlay
+* [x] **Advanced:** Replace Filter Settings Activity with a lightweight modal overlay
 
 ## Notes
 
