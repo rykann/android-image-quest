@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.kannegiesser.imagequest.fragments.SearchOptionsDialog"
+    android:padding="15dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_options_title"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:id="@+id/tvOptionsTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/image_size_label"
+        android:id="@+id/tvImageSize"
+        android:textSize="20sp"
+        android:layout_alignBottom="@+id/spnImageSize"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spnImageSize"
+        android:entries="@array/image_sizes"
+        android:layout_below="@+id/tvOptionsTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/tvImageSize"
+        android:layout_toEndOf="@+id/tvImageSize" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/color_filter_label"
+        android:id="@+id/tvColorFilter"
+        android:textSize="20sp"
+        android:layout_alignBottom="@+id/spnColorFilter"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spnColorFilter"
+        android:entries="@array/color_filters"
+        android:layout_below="@+id/spnImageSize"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/tvColorFilter"
+        android:layout_toEndOf="@+id/tvColorFilter" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/image_type_label"
+        android:id="@+id/tvImageType"
+        android:textSize="20sp"
+        android:layout_alignBottom="@+id/spnImageType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spnImageType"
+        android:entries="@array/image_types"
+        android:layout_below="@+id/spnColorFilter"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/tvImageType"
+        android:layout_toEndOf="@+id/tvImageType" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/site_filter_label"
+        android:id="@+id/tvSiteFilter"
+        android:textSize="20sp"
+        android:layout_above="@+id/btnSaveOptions"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etSiteFilter"
+        android:layout_below="@+id/spnImageType"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/spnImageType"
+        android:layout_alignStart="@+id/spnImageType" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:id="@+id/btnSaveOptions"
+        android:layout_below="@+id/etSiteFilter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+</RelativeLayout>

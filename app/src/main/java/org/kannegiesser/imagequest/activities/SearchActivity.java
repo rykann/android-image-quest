@@ -2,6 +2,7 @@ package org.kannegiesser.imagequest.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,15 +24,17 @@ import org.kannegiesser.imagequest.R;
 import org.kannegiesser.imagequest.adapters.ImageResultsAdapter;
 import org.kannegiesser.imagequest.clients.ImageSearchClient;
 import org.kannegiesser.imagequest.clients.ImageSearchClientImpl;
+import org.kannegiesser.imagequest.fragments.SearchOptionsDialog;
 import org.kannegiesser.imagequest.listeners.EndlessScrollListener;
 import org.kannegiesser.imagequest.models.ImageQuery;
 import org.kannegiesser.imagequest.models.ImageResult;
+import org.kannegiesser.imagequest.models.SearchOptions;
 
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchOptionsDialog.SearchOptionsDialogListener {
 
     private static final String TAG = "SearchActivity";
 
@@ -41,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
     private ImageSearchClient imageSearchClient = new ImageSearchClientImpl();
     private ArrayList<ImageResult> imageResults = new ArrayList<>();
     private ImageResultsAdapter imageResultsAdapter;
+    private SearchOptions searchOptions = SearchOptions.defaultOptions();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,7 @@ public class SearchActivity extends AppCompatActivity {
         query.query = etQuery.getText().toString();
         query.resultsPerPage = 8;
         query.startIndex = page * 8;
+        query.options = searchOptions;
 
         imageSearchClient.findImages(query, new JsonHttpResponseHandler() {
             @Override
@@ -134,10 +139,23 @@ public class SearchActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.miSearchOptions) {
+            showOptionsDialog();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showOptionsDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        SearchOptionsDialog dialog = SearchOptionsDialog.newInstance(searchOptions);
+        dialog.show(fm, "fragment_search_options");
+    }
+
+    @Override
+    public void onSaveSearchOptions(SearchOptions searchOptions) {
+        this.searchOptions = searchOptions;
+        //TODO: only fetch if search options were changed
+        fetchImageResults(0);
     }
 }

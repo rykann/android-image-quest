@@ -9,4 +9,11 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_image_display">ImageDisplayActivity</string>
+    <string name="search_options_title">Advanced search options</string>
+    <string name="image_size_label">Image Size</string>
+    <string name="search_options">Search Options</string>
+    <string name="color_filter_label">Color Filter</string>
+    <string name="save">Save</string>
+    <string name="image_type_label">Image Type</string>
+    <string name="site_filter_label">Site Filter</string>
 </resources>
